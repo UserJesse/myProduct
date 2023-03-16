@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        <div>
+            账号: <input name="userId">
+        </div>
+        <div>
+            密码: <input name="password">
+        </div>
+        <div>
+            手机号: <input name="number">
+        </div>
+        <div>
+            验证码: <input name="verifyCode"><button type="button" class="sendVerifyCode">获取短信验证码</button>
+        </div>
+        <div><button type="button" class="sub-btn">提交</button></div>
+    </form>
+
+    <script>
+        $(function(){  
+	//发送验证码
+	$(".sendVerifyCode").on("click", function(){
+		var number = $("input[name=number]").val();
+		$.ajax({
+	        url: getBasePath()+"/sendSms.html",
+	        async : true,
+	        type: "post",
+	        dataType: "json",
+	        data: {"number":number},
+	        success: function (data) {
+	        	if(data == 'fail'){
+	        		alert("发送验证码失败");
+	        		return ;
+	        	}
+	        }
+    	});
+	}) 
+	//提交
+	$(".sub-btn").on("click", function(){
+		var data = {};
+		data.userId = $.trim($("input[name=userId]").val());
+		data.password = $.trim($("input[name=password]").val());
+		data.number = $.trim($("input[name=number]").val());
+		data.verifyCode = $.trim($("input[name=verifyCode]").val());
+		$.ajax({
+	        url: getBasePath()+"/register.html",
+	        async : true,
+	        type: "post",
+	        dataType: "json",
+	        data: data,
+	        success: function (data) {
+	        	if(data == 'fail'){
+	        		alert("注册失败");
+	        		return ;
+	        	}
+	        	alert("注册成功");
+	        }
+    	});
+	})
+});
+
+作者：laozuo
+链接：https://juejin.cn/post/6844903692789874701
+来源：稀土掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+    </script>
+ 
+</body>
+</html>
